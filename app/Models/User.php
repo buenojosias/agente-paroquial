@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -25,6 +27,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_active',
+        'roles'
     ];
 
     protected $hidden = [
@@ -37,6 +41,48 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
+            'roles' => 'array',
         ];
+    }
+
+        // Retorna array (sempre) — facilita uso nas views
+    public function getRolesArray(): array
+    {
+        return $this->roles ?? [];
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->getRolesArray(), true);
+    }
+
+    /** aceita string ou array */
+    public function hasAnyRole(array|string $roles): bool
+    {
+        $roles = (array) $roles;
+        return count(array_intersect($roles, $this->getRolesArray())) > 0;
+    }
+
+    // public function communities(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Community::class)
+    //         ->withPivot('is_leader');
+    // }
+
+    // public function pastorals(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Pastoral::class)
+    //         ->withPivot('is_leader');
+    // }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(User::class, 'created_by');
     }
 }

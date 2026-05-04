@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Providers;
+
+use App\Models\Community;
+use App\Models\Event;
+use App\Models\Group;
+use App\Models\Question;
+use App\Models\Service;
+use App\Models\User;
+use App\Policies\CommunityPolicy;
+use App\Policies\EventPolicy;
+use App\Policies\GroupPolicy;
+use App\Policies\QuestionPolicy;
+use App\Policies\ServicePolicy;
+use App\Policies\UserPolicy;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use Opcodes\LogViewer\Facades\LogViewer;
+
+class AuthServiceProvider extends ServiceProvider
+{
+    protected $policies = [
+        // Community::class => CommunityPolicy::class,
+        // Group::class => GroupPolicy::class,
+        // Service::class => ServicePolicy::class,
+        // Event::class => EventPolicy::class,
+        // User::class => UserPolicy::class,
+        // Question::class => QuestionPolicy::class,
+    ];
+
+    public function register(): void
+    {
+        //
+    }
+
+    public function boot(): void
+    {
+        $this->registerPolicies();
+
+        Gate::before(function ($user, $ability) {
+            if ($user->hasRole('admin')) {
+                return true;
+            }
+        });
+
+        LogViewer::auth(function ($request) {
+            return $request->user()->hasRole('admin');
+        });
+    }
+}

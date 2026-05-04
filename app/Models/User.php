@@ -70,9 +70,9 @@ class User extends Authenticatable
     //         ->withPivot('is_leader');
     // }
 
-    // public function pastorals(): BelongsToMany
+    // public function groups(): BelongsToMany
     // {
-    //     return $this->belongsToMany(Pastoral::class)
+    //     return $this->belongsToMany(Group::class)
     //         ->withPivot('is_leader');
     // }
 

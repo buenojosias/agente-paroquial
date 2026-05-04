@@ -4,7 +4,7 @@ namespace App;
 
 enum UserRoleEnum: string
 {
-    case COORDINATOR = 'coordinator';
+    case MEMBER = 'member';
     case SECRETARY = 'secretary';
     case PRIEST = 'priest';
     case PASCOM = 'pascom';
@@ -13,7 +13,7 @@ enum UserRoleEnum: string
     public function getLabel(): string
     {
         return match ($this) {
-            self::COORDINATOR => 'Coordenador/membro de pastoral',
+            self::MEMBER => 'Membro/coordenador(a) de grupo',
             self::SECRETARY => 'Secretário(a)',
             self::PRIEST => 'Pároco/vigário',
             self::PASCOM => 'Pasconeiro(a)',

@@ -17,7 +17,7 @@ class Delete extends Component
     {
         return <<<'HTML'
         <div>
-            <x-button.circle icon="trash" color="red" wire:click="confirm" />
+            <x-ts-button.circle icon="trash" color="red" wire:click="confirm" />
         </div>
         HTML;
     }

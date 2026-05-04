@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use TallStackUi\Facades\TallStackUi;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,6 +16,48 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //
+        Blade::if('role', function ($role) {
+            return auth()->check() && auth()->user()->hasRole($role);
+        });
+
+        Blade::if('anyrole', function ($roles) {
+            return auth()->check() && auth()->user()->hasAnyRole($roles);
+        });
+
+        Relation::morphMap([
+            'community' => \App\Models\Community::class,
+            'group' => \App\Models\Group::class,
+            'event' => \App\Models\Event::class,
+            'mass' => \App\Models\Mass::class,
+            'service' => \App\Models\Service::class,
+        ]);
+
+        TallStackUi::customize()
+            ->layout()
+            ->block('main', 'mx-auto max-w-full p-4 md:p-6');
+
+        TallStackUi::customize()
+            ->sideBar('item')
+            ->block('item.icon')
+            ->replace('h-6 w-6', 'h-5 w-5');
+
+        TallStackUi::customize()
+            ->sideBar('separator')
+            ->block('line.base')
+            ->replace('text-base', 'text-xs');
+
+        TallStackUi::customize()
+            ->table()
+            ->block('table.td')
+            ->replace('py-4', 'py-3');
+
+        TallStackUi::customize()
+            ->button()
+            ->block('wrapper.sizes.md')
+            ->replace('text-md', 'text-sm')
+            ->and()
+            ->button()
+            ->block('wrapper.sizes.sm')
+            ->replace('text-md', 'text-xs');
     }
 }

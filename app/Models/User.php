@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,16 +52,45 @@ class User extends Authenticatable
         return $this->is_admin;
     }
 
-    // Retorna array (sempre) — facilita uso nas views
-    public function getRolesArray(): array
+    public function parishes(): BelongsToMany
     {
-        return $this->roles ?? [];
+        return $this->belongsToMany(Parish::class)->withPivot('role');
     }
 
-    public function hasRole(string $role): bool
+    public function selectedParish(): BelongsTo
     {
-        return in_array($role, $this->getRolesArray(), true);
+        return $this->belongsTo(Parish::class, 'selected_parish_id');
     }
+
+    public function getRoleInSelectedParish(): ?string
+    {
+        if (!$this->selectedParish) {
+            return null;
+        }
+
+        // Eager load the pivot 'role' if not already loaded, and filter for the selected parish
+        $parishUser = $this->parishes()
+                            ->where('parish_id', $this->selectedParish->id)
+                            ->first();
+
+        return $parishUser ? $parishUser->pivot->role : null;
+    }
+
+    public function hasRoleInSelectedParish(string $role): bool
+    {
+        return $this->getRoleInSelectedParish() === $role;
+    }
+
+    // Retorna array (sempre) — facilita uso nas views
+    // public function getRolesArray(): array
+    // {
+    //     return $this->roles ?? [];
+    // }
+
+    // public function hasRole(string $role): bool
+    // {
+    //     return in_array($role, $this->getRolesArray(), true);
+    // }
 
     /** aceita string ou array */
     // public function hasAnyRole(array|string $roles): bool

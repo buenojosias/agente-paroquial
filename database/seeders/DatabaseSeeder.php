@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true,
         ]);        
 
-        User::factory()->create([
+        $josias = User::factory()->create([
             'name' => 'Josias Bueno',
             'email' => 'josias@email.com',
             'password' => bcrypt('123456'),
@@ -37,5 +37,6 @@ class DatabaseSeeder extends Seeder
             'selected_parish_name' => 'Paróquia São Marcos',
             'created_by' => 1,
         ]);
+        $josias->parishes()->attach(1, ['role' => 'admin']);
     }
 }

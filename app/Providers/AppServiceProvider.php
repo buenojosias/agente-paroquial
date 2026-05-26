@@ -16,20 +16,20 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        Blade::if('role', function ($role) {
-            return auth()->check() && auth()->user()->hasRole($role);
-        });
+        // Blade::if('role', function ($role) {
+        //     return auth()->check() && auth()->user()->hasRole($role);
+        // });
 
-        Blade::if('anyrole', function ($roles) {
-            return auth()->check() && auth()->user()->hasAnyRole($roles);
-        });
+        // Blade::if('anyrole', function ($roles) {
+        //     return auth()->check() && auth()->user()->hasAnyRole($roles);
+        // });
 
         Relation::morphMap([
-            'community' => \App\Models\Community::class,
-            'group' => \App\Models\Group::class,
-            'event' => \App\Models\Event::class,
-            'mass' => \App\Models\Mass::class,
-            'service' => \App\Models\Service::class,
+            // 'community' => \App\Models\Community::class,
+            // 'group' => \App\Models\Group::class,
+            // 'event' => \App\Models\Event::class,
+            // 'mass' => \App\Models\Mass::class,
+            // 'service' => \App\Models\Service::class,
         ]);
 
         TallStackUi::customize()

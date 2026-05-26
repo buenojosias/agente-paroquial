@@ -42,11 +42,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
-            'roles' => 'array',
+            'is_admin' => 'boolean',
         ];
     }
 
-        // Retorna array (sempre) — facilita uso nas views
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
+    }
+
+    // Retorna array (sempre) — facilita uso nas views
     public function getRolesArray(): array
     {
         return $this->roles ?? [];
@@ -58,11 +63,11 @@ class User extends Authenticatable
     }
 
     /** aceita string ou array */
-    public function hasAnyRole(array|string $roles): bool
-    {
-        $roles = (array) $roles;
-        return count(array_intersect($roles, $this->getRolesArray())) > 0;
-    }
+    // public function hasAnyRole(array|string $roles): bool
+    // {
+    //     $roles = (array) $roles;
+    //     return count(array_intersect($roles, $this->getRolesArray())) > 0;
+    // }
 
     // public function communities(): BelongsToMany
     // {

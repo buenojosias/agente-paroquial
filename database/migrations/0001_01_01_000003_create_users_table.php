@@ -14,7 +14,9 @@ return new class () extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_active')->default(true);
-            $table->json('roles')->nullable();
+            $table->boolean('is_admin')->default(false);
+            $table->foreignId('selected_parish_id')->nullable()->constrained('parishes')->nullOnDelete();
+            $table->string('selected_parish_name')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->rememberToken();
             $table->timestamps();

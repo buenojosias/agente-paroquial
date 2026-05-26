@@ -13,7 +13,7 @@
         </div>
 
         <div class="block mt-4">
-            <x-checkbox label="Remember me" id="remember_me" type="checkbox" name="remember" />
+            <x-ts-checkbox label="Remember me" id="remember_me" type="checkbox" name="remember" />
         </div>
 
         <div class="flex items-center justify-end mt-4">

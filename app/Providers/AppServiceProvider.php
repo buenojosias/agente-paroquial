@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
 
         TallStackUi::customize()
             ->layout()
-            ->block('main', 'mx-auto max-w-full p-4 md:p-6');
+            ->block('main', 'mx-auto max-w-full p-4 md:p-8');
 
         TallStackUi::customize()
             ->sideBar('item')
